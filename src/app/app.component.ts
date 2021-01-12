@@ -15,12 +15,11 @@ export class AppComponent implements OnInit {
 
   private subscription = new Subscription();
 
-  rowsCount = '3';
+  rowsCount = '2';
   lineHeight = '20px';
   fontSize = '20px';
 
   blockEnter = false;
-  blockInit = false;
   elem
 
   ngOnInit(): void {
@@ -72,22 +71,17 @@ export class AppComponent implements OnInit {
     //   });
     //   this.subscription.add(updateTextAreaStream$);
   }
+
   showPosition(e) {
-    console.log('Block enter ',this.blockEnter)
     this.elem = this.textArea.nativeElement;
 
     this.textAreaLimit(e)
 
-    console.log(this.elem.selectionEnd )
-    console.log(this.elem.value.length )
     if (this.elem.selectionEnd < this.elem.value.length) {
-      if (this.blockInit == true) {
-        console.log('BLOCK');
         this.blockEnter = true;
         return this.elem.selectionEnd;
       }
       this.blockEnter = false;
-    }
   }
   onKeydownEvent(e) {
     if (this.blockEnter == true) {
@@ -96,29 +90,11 @@ export class AppComponent implements OnInit {
       }
     }
   }
-  textAreaLimit(e) {
-    console.log(this.elem.clientHeight)
-    console.log(this.elem.scrollHeight)
+  textAreaLimit(e): void {
     while (this.elem.clientHeight < this.elem.scrollHeight) {
-      this.blockInit = true;
       this.blockEnter = true;
-      console.log('Block enter ',this.blockEnter);
       return (this.elem.value = this.elem.value.slice(0, -1));
     }
-    if (this.elem.selectionEnd < this.elem.value.length) {
-      if (this.blockInit == true) {
-        console.log('BLOCK');
-        // console.log(this.elem.selectionEnd);
-        this.blockEnter = true;
-        return this.elem.selectionEnd;
-      }
-      this.blockEnter = false;
-    }
-    else {
-      this.blockInit = false;
-      this.blockEnter = false;
-    }
-   
   }
 
   ngOnDestroy(): void {

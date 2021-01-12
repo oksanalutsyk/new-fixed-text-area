@@ -1,16 +1,23 @@
 <h1>Fixed textarea</h1>
 <div class="header">
-  <div><span>Rows </span><input #rowsCountInput type="text" [value]="rowsCount" /></div>
-  <div><span>Line height </span><input #lineHeightInput type="text" [value]="lineHeight" /></div>
-  <div><span>Font size </span><input #fontSizeInput type="text" [value]="fontSize" /></div>
+  <div>
+    <span>Rows </span><input #rowsCountInput type="text" [value]="rowsCount" />
+  </div>
+  <div>
+    <span>Line height </span
+    ><input #lineHeightInput type="text" [value]="lineHeight" />
+  </div>
+  <div>
+    <span>Font size </span
+    ><input #fontSizeInput type="text" [value]="fontSize" />
+  </div>
 </div>
 
 <textarea
- (click)="showPosition($event)"
- (input)="textAreaLimit($event)"
- (keydown)="onKeydownEvent($event)"
   #textarea
   [rows]="rowsCount"
-  [ngStyle]="{ 'font-size': fontSize, 'lineHeight': lineHeight }"
->
-</textarea>
+  [ngStyle]="{ 'font-size': fontSize, lineHeight: lineHeight }"
+  (click)="showPosition($event)"
+  (input)="textAreaLimit($event)"
+  (keydown)="onKeydownEvent($event)"
+></textarea>
