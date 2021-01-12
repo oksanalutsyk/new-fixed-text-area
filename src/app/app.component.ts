@@ -8,16 +8,20 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  // @ViewChild('textarea', { static: true }) textArea: ElementRef;
+  @ViewChild('textarea', { static: true }) textArea: ElementRef;
   @ViewChild('rowsCountInput', { static: true }) rowsCountInput: ElementRef;
   @ViewChild('lineHeightInput', { static: true }) lineHeightInput: ElementRef;
   @ViewChild('fontSizeInput', { static: true }) fontSizeInput: ElementRef;
 
   private subscription = new Subscription();
 
-  rowsCount = '5';
+  rowsCount = '3';
   lineHeight = '20px';
   fontSize = '20px';
+
+  blockEnter = false;
+  blockInit = false;
+  elem
 
   ngOnInit(): void {
     this.initComponent();
@@ -67,6 +71,54 @@ export class AppComponent implements OnInit {
     //     this.fontSize = data[2].target.value;
     //   });
     //   this.subscription.add(updateTextAreaStream$);
+  }
+  showPosition(e) {
+    console.log('Block enter ',this.blockEnter)
+    this.elem = this.textArea.nativeElement;
+
+    this.textAreaLimit(e)
+
+    console.log(this.elem.selectionEnd )
+    console.log(this.elem.value.length )
+    if (this.elem.selectionEnd < this.elem.value.length) {
+      if (this.blockInit == true) {
+        console.log('BLOCK');
+        this.blockEnter = true;
+        return this.elem.selectionEnd;
+      }
+      this.blockEnter = false;
+    }
+  }
+  onKeydownEvent(e) {
+    if (this.blockEnter == true) {
+      if (e.key === 'Enter') {
+        return false;
+      }
+    }
+  }
+  textAreaLimit(e) {
+    console.log(this.elem.clientHeight)
+    console.log(this.elem.scrollHeight)
+    while (this.elem.clientHeight < this.elem.scrollHeight) {
+      this.blockInit = true;
+      this.blockEnter = true;
+      console.log('Block enter ',this.blockEnter);
+      return (this.elem.value = this.elem.value.slice(0, -1));
+    }
+    if (this.elem.selectionEnd < this.elem.value.length) {
+      if (this.blockInit == true) {
+        console.log('BLOCK');
+        // console.log(this.elem.selectionEnd);
+        this.blockEnter = true;
+        return this.elem.selectionEnd;
+      }
+      this.blockEnter = false;
+    }
+    else {
+      this.blockInit = false;
+      this.blockEnter = false;
+    }
+   
   }
 
   ngOnDestroy(): void {

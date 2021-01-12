@@ -6,6 +6,9 @@
 </div>
 
 <textarea
+ (click)="showPosition($event)"
+ (input)="textAreaLimit($event)"
+ (keydown)="onKeydownEvent($event)"
   #textarea
   [rows]="rowsCount"
   [ngStyle]="{ 'font-size': fontSize, 'lineHeight': lineHeight }"
