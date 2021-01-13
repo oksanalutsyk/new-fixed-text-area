@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
   elem;
 
   startWidth = 10;
-  textAreaWidth:any;
+  textAreaWidth: any;
 
   ngOnInit(): void {
     this.textAreaWidth = this.startWidth;
@@ -77,6 +77,7 @@ export class AppComponent implements OnInit {
   }
 
   showPosition(e) {
+    console.log(e.target.value);
     this.elem = this.textArea.nativeElement;
 
     this.textAreaLimit(e);
@@ -88,6 +89,7 @@ export class AppComponent implements OnInit {
     this.blockEnter = false;
   }
   onKeydownEvent(e) {
+    console.log('Block Enter', this.blockEnter);
     if (this.blockEnter == true) {
       if (e.key === 'Enter') {
         return false;
@@ -97,13 +99,17 @@ export class AppComponent implements OnInit {
   textAreaLimit(e) {
     console.log(e);
     if (e.inputType == 'insertText') {
-      if (this.textAreaWidth>this.startWidth) {
-        this.textAreaWidth = e.target.value.length - 2;
+      if (this.elem.clientWidth < this.elem.scrollWidth) {
+        this.textAreaWidth = +this.textAreaWidth + 1;
+        console.log(this.textAreaWidth);
       }
     }
     if (e.inputType == 'deleteContentBackward') {
-      if(this.textAreaWidth>this.startWidth) {
-        this.textAreaWidth = e.target.value.length - 2;
+      if (this.textAreaWidth > this.startWidth) {
+        this.textAreaWidth = +this.textAreaWidth - 1;
+      }
+      else {
+        this.textAreaWidth===this.startWidth
       }
     }
     if (e.inputType == 'insertFromPaste') {
@@ -122,20 +128,3 @@ export class AppComponent implements OnInit {
     this.subscription.unsubscribe();
   }
 }
-
-
-
-
-// if(this.textAreaWidth>this.startWidth) {
-      //   this.textAreaWidth = e.target.value.length - 2;
-      // }
-    // }
-    // if (e.inputType == 'insertFromPaste') {
-    //   if (this.elem.clientWidth < this.elem.scrollWidth) {
-    //     this.textAreaWidth = e.target.value.length - 2;
-    //     // console.log(e.target.value.length);
-    //     // console.log(this.elem.clientWidth);
-    //     // console.log(this.elem.scrollWidth);
-    //     // console.log(e.target.clientWidth)
-    //   }
-    // }
