@@ -16,8 +16,10 @@
 <textarea
   #textarea
   [rows]="rowsCount"
-  [ngStyle]="{ 'font-size': fontSize, lineHeight: lineHeight }"
+  [ngStyle]="{ 'font-size': fontSize, 'lineHeight': lineHeight }"
   (click)="showPosition($event)"
   (input)="textAreaLimit($event)"
   (keydown)="onKeydownEvent($event)"
+  wrap="off"
+  
 ></textarea>

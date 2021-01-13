@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
   fontSize = '20px';
 
   blockEnter = false;
-  elem
+  elem;
 
   ngOnInit(): void {
     this.initComponent();
@@ -75,13 +75,23 @@ export class AppComponent implements OnInit {
   showPosition(e) {
     this.elem = this.textArea.nativeElement;
 
-    this.textAreaLimit(e)
+    this.textAreaLimit(e);
 
     if (this.elem.selectionEnd < this.elem.value.length) {
-        this.blockEnter = true;
-        return this.elem.selectionEnd;
-      }
-      this.blockEnter = false;
+      // console.log(this.elem.value)
+      // console.log(this.elem.value.slice(this.elem.selectionEnd, -1))
+      // console.log(this.elem.value.slice( 0,this.elem.selectionEnd-1))
+      // console.log(this.elem.value.slice(-1))
+      // console.log(
+      //   this.elem.value.slice(this.elem.selectionEnd, -1) +
+      //     this.elem.value.slice(-1)
+      // );
+
+      // console.log(this.elem.value.length-this.elem.selectionEnd)
+      this.blockEnter = true;
+      return this.elem.selectionEnd;
+    }
+    this.blockEnter = false;
   }
   onKeydownEvent(e) {
     if (this.blockEnter == true) {
@@ -90,7 +100,22 @@ export class AppComponent implements OnInit {
       }
     }
   }
-  textAreaLimit(e): void {
+  textAreaLimit(e) {
+    if (e.inputType == 'insertText') {
+      if (this.elem.clientWidth < this.elem.scrollWidth) {
+        if (this.elem.selectionEnd < this.elem.value.length) {
+          return (this.elem.value =
+            this.elem.value.slice(0, this.elem.selectionEnd - 1) +
+            this.elem.value.slice(this.elem.selectionEnd, -1) +
+            this.elem.value.slice(-1));
+        } else
+          return (this.elem.value = this.elem.value.slice(
+            0,
+            this.elem.selectionEnd - 1
+          ));
+      }
+    }
+
     while (this.elem.clientHeight < this.elem.scrollHeight) {
       this.blockEnter = true;
       return (this.elem.value = this.elem.value.slice(0, -1));
