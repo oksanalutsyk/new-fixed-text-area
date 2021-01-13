@@ -22,7 +22,11 @@ export class AppComponent implements OnInit {
   blockEnter = false;
   elem;
 
+  startWidth = 10;
+  textAreaWidth:any;
+
   ngOnInit(): void {
+    this.textAreaWidth = this.startWidth;
     this.initComponent();
   }
 
@@ -78,16 +82,6 @@ export class AppComponent implements OnInit {
     this.textAreaLimit(e);
 
     if (this.elem.selectionEnd < this.elem.value.length) {
-      // console.log(this.elem.value)
-      // console.log(this.elem.value.slice(this.elem.selectionEnd, -1))
-      // console.log(this.elem.value.slice( 0,this.elem.selectionEnd-1))
-      // console.log(this.elem.value.slice(-1))
-      // console.log(
-      //   this.elem.value.slice(this.elem.selectionEnd, -1) +
-      //     this.elem.value.slice(-1)
-      // );
-
-      // console.log(this.elem.value.length-this.elem.selectionEnd)
       this.blockEnter = true;
       return this.elem.selectionEnd;
     }
@@ -101,18 +95,20 @@ export class AppComponent implements OnInit {
     }
   }
   textAreaLimit(e) {
+    console.log(e);
     if (e.inputType == 'insertText') {
+      if (this.textAreaWidth>this.startWidth) {
+        this.textAreaWidth = e.target.value.length - 2;
+      }
+    }
+    if (e.inputType == 'deleteContentBackward') {
+      if(this.textAreaWidth>this.startWidth) {
+        this.textAreaWidth = e.target.value.length - 2;
+      }
+    }
+    if (e.inputType == 'insertFromPaste') {
       if (this.elem.clientWidth < this.elem.scrollWidth) {
-        if (this.elem.selectionEnd < this.elem.value.length) {
-          return (this.elem.value =
-            this.elem.value.slice(0, this.elem.selectionEnd - 1) +
-            this.elem.value.slice(this.elem.selectionEnd, -1) +
-            this.elem.value.slice(-1));
-        } else
-          return (this.elem.value = this.elem.value.slice(
-            0,
-            this.elem.selectionEnd - 1
-          ));
+        this.textAreaWidth = e.target.value.length - 2;
       }
     }
 
@@ -126,3 +122,20 @@ export class AppComponent implements OnInit {
     this.subscription.unsubscribe();
   }
 }
+
+
+
+
+// if(this.textAreaWidth>this.startWidth) {
+      //   this.textAreaWidth = e.target.value.length - 2;
+      // }
+    // }
+    // if (e.inputType == 'insertFromPaste') {
+    //   if (this.elem.clientWidth < this.elem.scrollWidth) {
+    //     this.textAreaWidth = e.target.value.length - 2;
+    //     // console.log(e.target.value.length);
+    //     // console.log(this.elem.clientWidth);
+    //     // console.log(this.elem.scrollWidth);
+    //     // console.log(e.target.clientWidth)
+    //   }
+    // }

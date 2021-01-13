@@ -16,6 +16,7 @@
 <textarea
   #textarea
   [rows]="rowsCount"
+  [cols]="textAreaWidth"
   [ngStyle]="{ 'font-size': fontSize, 'lineHeight': lineHeight }"
   (click)="showPosition($event)"
   (input)="textAreaLimit($event)"
